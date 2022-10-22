@@ -25,13 +25,10 @@ function showNewUserOnScreen(user) {
     document.getElementById('email').value = '';
     document.getElementById('mobile').value = '';
   
-    if(localStorage.getItem(user.email) !== null){
-        removeUserFromScreen(user.email)
-    }
 
     const parentNode = document.getElementById('users');
-    const childHTML=`<li id= ${user.email}> ${user.name} -${user.email}
-                     <button onclick= deleteUser('${user.email}')>Delete User</button>
+    const childHTML=`<li id= ${user._id}> ${user.name} -${user.email}
+                     <button onclick= deleteUser('${user._id}')>Delete User</button>
                      <button onclick= editUserDetails('${user.email}','${user.name}','${user.mobile}')>Edit</button>
                      </li>`
     parentNode.innerHTML=parentNode.innerHTML + childHTML;                 
@@ -51,15 +48,18 @@ window.addEventListener("DOMContentLoaded",()=>{
 
 
 //Delete User
-function deleteUser(emailId) {
-    localStorage.removeItem(emailId);
-    removeUserFromScreen(emailId)
+function deleteUser(id) {
+    axios.delete(`https://crudcrud.com/api/de7fb5b9a74042b6b23c26fd4a87fade/appointment/${id}`)
+    .then((res)=>{
+        console.log(res)
+        removeUserFromScreen(id)
+    })
 }
 
 //Delete user from screen
-function removeUserFromScreen(emailId) {
+function removeUserFromScreen(Id) {
     const parentNode = document.getElementById('users');
-    const childNodeToDelete = document.getElementById(emailId);
+    const childNodeToDelete = document.getElementById(Id);
     if(childNodeToDelete) {
         parentNode.removeChild(childNodeToDelete)
     }
