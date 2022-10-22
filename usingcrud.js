@@ -1,6 +1,6 @@
 
 
-function saveToLocalStorage(event) {
+function saveToCrud(event) {
     event.preventDefault();
     const name = event.target.name.value;
     const email = event.target.email.value;
@@ -17,8 +17,7 @@ function saveToLocalStorage(event) {
         console.log(response)
     })
     .catch((err)=>console.log(err))
-    // localStorage.setItem(obj.email,JSON.stringify(obj));
-    // showNewUserOnScreen(obj);
+    
 }
 
 function showNewUserOnScreen(user) {
@@ -37,16 +36,17 @@ function showNewUserOnScreen(user) {
                      </li>`
     parentNode.innerHTML=parentNode.innerHTML + childHTML;                 
 }
-window.addEventListener("DOMContentLoaded", () => {
-    const localStorageObj = localStorage;
-    const localstoragekeys  = Object.keys(localStorageObj)
 
-    for(var i =0; i< localstoragekeys.length; i++){
-        const key = localstoragekeys[i]
-        const userDetailsString = localStorageObj[key];
-        const userDetailsObj = JSON.parse(userDetailsString);
-        showNewUserOnScreen(userDetailsObj)
-    }
+
+window.addEventListener("DOMContentLoaded",()=>{
+    axios.get("https://crudcrud.com/api/de7fb5b9a74042b6b23c26fd4a87fade/appointment")
+    .then((response)=> {
+
+               for(let i=0;i<response.data.length;i++) {
+                showNewUserOnScreen(response.data[i])
+               }      
+    })
+    .catch((err)=>console.log(err))
 })
 
 
